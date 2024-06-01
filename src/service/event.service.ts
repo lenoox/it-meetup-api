@@ -1,4 +1,4 @@
-import prisma from '../../prisma/index'
+import prisma from '../db'
 import {Request, Response} from "express";
 
 export const createEvent = async (req: Request, res: Response) => {

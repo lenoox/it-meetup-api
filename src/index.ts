@@ -1,10 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import event from "./controllers/event.controller";
 import user from "./controllers/user.controller";
+import auth from "./controllers/auth.controller";
 import morgan from "morgan";
 import cors from "cors";
 
 import dotenv from "dotenv";
+import {protect} from "./core/auth";
 
 
 const app = express();
@@ -24,7 +26,8 @@ let corsOptions = {
 //app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :response-time ms\n'))
 app.use(morgan(' - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :response-time ms\n'))
 app.use(cors(corsOptions))
+app.use('/auth', auth);
 app.use('/user', user);
-app.use('/event', event);
+app.use('/event', protect, event);
 
 app.listen(port, () => console.log('Application is running'));

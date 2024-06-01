@@ -1,15 +1,26 @@
-FROM node:18 as base
-WORKDIR app
-COPY package.json .
+#Build stage
+FROM node:18 AS build
+
+WORKDIR /app
+
+COPY package*.json .
+
 RUN npm install
-
-COPY . .
-RUN apt-get update -y && apt-get install -y openssl
-
 RUN npx prisma generate
 
-FROM base as production
-
-ENV NODE_PATH=./build
+COPY . .
 
 RUN npm run build
+
+#Production stage
+FROM node:18 AS production
+
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm ci --only=production
+
+COPY --from=build /app/dist ./dist
+
+CMD ["node", "dist/index.js"]

@@ -1,15 +1,14 @@
 version: "3.8"
 
 services:
-  ts-node-docker:
+  app:
     build:
       context: .
-      dockerfile: Dockerfile
-      target: base
+      target: build
     platform: linux/amd64
     volumes:
-      - ./:/app
-      - ./nodemon.json:/home/node/app/nodemon.json
+    - ./:/app
+    - /app/node_modules
     container_name: ts-node-docker
     ports:
       - 3000:3000
