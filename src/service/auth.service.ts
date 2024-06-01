@@ -3,7 +3,6 @@ import {Request, Response} from "express";
 import prisma from "../db";
 import {comparePasswords, createJWT, hashPassword} from "../core/auth";
 import {userToDto} from "../mappers/userMappers";
-import {User} from "@prisma/client";
 
 
 export const createUser = async (req: Request, res: Response) => {
